@@ -40,7 +40,7 @@ module.exports.policies = {
 
 /**
  * Here's what the `isNiceToAnimals` policy from above might look like:
- * (this file would be located at `policies/isNiceToAnimals.js`)
+ * (this file would be located at `api/policies/isNiceToAnimals.js`)
  *
  * We'll make some educated guesses about whether our system will
  * consider this user someone who is nice to animals.

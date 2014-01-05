@@ -1,0 +1,35 @@
+extends ../layout
+
+block body
+  .container.ng-cloak(ng-controller="TodoController")
+    .row
+      .col-xs-12
+        .panel.panel-default
+          script(type="text/ng-template", id="todoModalContent.html")
+            .modal-header
+              h3 Todo
+            .modal-body
+              form(role="form")
+                .form-group
+                  label(for="todoTitle") Title
+                  input.form-control(type="text", id="todoTitle",
+                    placeholder="My todo item...", ng-model="todo.title")
+            .modal-footer
+              button.btn.btn-default(ng-click="cancel()") Cancel
+              button.btn.btn-primary(ng-click="ok()") OK
+
+          .panel-heading.clearfix
+            a.pull-right(ng-click="openModal(newTodo)")
+              i.fa.fa-plus
+            h1.panel-title Todo List
+
+
+          ul.list-group
+            li.list-group-item(ng-repeat="todo in todos")
+              a.pull-right(ng-click="openModal(todo)")
+                i.fa.fa-edit
+              a(ng-click="toggleCompleted(todo)")
+                i(ng-class="{ fa: true, 'fa-lg': true, 'fa-check-circle-o': todo.isComplete, 'fa-circle-o': !todo.isComplete }")
+              = ' '
+              span(ng-class="{ strikethru: todo.isComplete }") {{todo.title}}
+

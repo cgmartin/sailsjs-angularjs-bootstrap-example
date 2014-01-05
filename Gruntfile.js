@@ -16,8 +16,6 @@
 
 module.exports = function (grunt) {
 
-
-
   /**
    * CSS files to inject in order
    * (uses Grunt-style wildcard/glob/splat expressions)
@@ -29,6 +27,8 @@ module.exports = function (grunt) {
    */
 
   var cssFilesToInject = [
+    'linker/styles/font-awesome.css',
+    'linker/styles/bootstrap.css',
     'linker/**/*.css'
   ];
 
@@ -45,18 +45,14 @@ module.exports = function (grunt) {
 
     // Below, as a demonstration, you'll see the built-in dependencies 
     // linked in the proper order order
-
-    // Bring in the socket.io client
+    'linker/js/jquery.js',
+    'linker/js/angular.js',
+    'linker/js/ui-bootstrap.js',
+    'linker/js/ui-bootstrap-tpls.js',
     'linker/js/socket.io.js',
-
-    // then beef it up with some convenience logic for talking to Sails.js
-    'linker/js/sails.io.js',
-
-    // A simpler boilerplate library for getting you up and running w/ an
-    // automatic listener for incoming messages from Socket.io.
+    'linker/js/angular-socket.io.js',
+    'linker/js/angular-sails.io.js',
     'linker/js/app.js',
-
-    // *->    put other dependencies here   <-*
 
     // All of the rest of your app scripts imported here
     'linker/**/*.js'
@@ -76,7 +72,6 @@ module.exports = function (grunt) {
   var templateFilesToInject = [
     'linker/**/*.html'
   ];
-
 
 
   /////////////////////////////////////////////////////////////////
@@ -131,8 +126,7 @@ module.exports = function (grunt) {
   grunt.loadTasks(depsPath + '/grunt-contrib-watch/tasks');
   grunt.loadTasks(depsPath + '/grunt-contrib-uglify/tasks');
   grunt.loadTasks(depsPath + '/grunt-contrib-cssmin/tasks');
-  grunt.loadTasks(depsPath + '/grunt-contrib-less/tasks');
-  grunt.loadTasks(depsPath + '/grunt-contrib-coffee/tasks');
+  grunt.loadNpmTasks('grunt-contrib-less');
 
   // Project configuration.
   grunt.initConfig({
@@ -142,21 +136,33 @@ module.exports = function (grunt) {
       dev: {
         files: [
           {
-          expand: true,
-          cwd: './assets',
-          src: ['**/*.!(coffee)'],
-          dest: '.tmp/public'
-        }
+            expand: true,
+            cwd: './assets',
+            src: ['**/*.!(coffee|less)'],
+            dest: '.tmp/public'
+          },
+          {
+            expand: true,
+            cwd: './bower_components/font-awesome/fonts/',
+            src: ['**/*'],
+            dest: '.tmp/public/linker/fonts'
+          },
+          { '.tmp/public/linker/js/jquery.js':            './bower_components/jquery/jquery.js' },
+          { '.tmp/public/linker/js/socket.io.js':         './bower_components/socket.io-client/dist/socket.io.js' },
+          { '.tmp/public/linker/js/angular.js':           './bower_components/angular/angular.js' },
+          { '.tmp/public/linker/js/ui-bootstrap.js':      './bower_components/angular-bootstrap/ui-bootstrap.js' },
+          { '.tmp/public/linker/js/ui-bootstrap-tpls.js': './bower_components/angular-bootstrap/ui-bootstrap-tpls.js' },
+          { '.tmp/public/linker/js/angular-socket.io.js': './bower_components/angular-socket-io/socket.js' }
         ]
       },
       build: {
         files: [
           {
-          expand: true,
-          cwd: '.tmp/public',
-          src: ['**/*'],
-          dest: 'www'
-        }
+            expand: true,
+            cwd: '.tmp/public',
+            src: ['**/*'],
+            dest: 'www'
+          }
         ]
       }
     },
@@ -169,13 +175,12 @@ module.exports = function (grunt) {
     jst: {
       dev: {
 
-        // To use other sorts of templates, specify the regexp below:
-        // options: {
-        //   templateSettings: {
-        //     interpolate: /\{\{(.+?)\}\}/g
-        //   }
-        // },
-
+        // To use other sorts of templates (mustache), specify the regexp below:
+//        options: {
+//           templateSettings: {
+//             interpolate: /\{\{(.+?)\}\}/g
+//           }
+//        },
         files: {
           '.tmp/public/jst.js': templateFilesToInject
         }
@@ -183,48 +188,24 @@ module.exports = function (grunt) {
     },
 
     less: {
-      dev: {
+      bootstrap: {
+        options: {
+          paths: ['assets/linker/styles', 'bower_components/bootstrap/less']
+        },
         files: [
-          {
-          expand: true,
-          cwd: 'assets/styles/',
-          src: ['*.less'],
-          dest: '.tmp/public/styles/',
-          ext: '.css'
-        }, {
-          expand: true,
-          cwd: 'assets/linker/styles/',
-          src: ['*.less'],
-          dest: '.tmp/public/linker/styles/',
-          ext: '.css'
-        }
+          { '.tmp/public/linker/styles/bootstrap.css': 'assets/linker/styles/bootstrap.less' }
+        ]
+      },
+      fontawesome: {
+        options: {
+          paths: ['assets/linker/styles', 'bower_components/font-awesome/less']
+        },
+        files: [
+          { '.tmp/public/linker/styles/font-awesome.css': 'assets/linker/styles/font-awesome.less' }
         ]
       }
     },
     
-    coffee: {
-      dev: {
-        options:{
-          bare:true
-        },
-        files: [
-          {
-            expand: true,
-            cwd: 'assets/js/',
-            src: ['**/*.coffee'],
-            dest: '.tmp/public/js/',
-            ext: '.js'
-          }, {
-            expand: true,
-            cwd: 'assets/linker/js/',
-            src: ['**/*.coffee'],
-            dest: '.tmp/public/linker/js/',
-            ext: '.js'
-          }
-        ]
-      }
-    },
-
     concat: {
       js: {
         src: jsFilesToInject,
@@ -422,14 +403,12 @@ module.exports = function (grunt) {
   grunt.registerTask('compileAssets', [
     'clean:dev',
     'jst:dev',
-    'less:dev',
-    'copy:dev',    
-    'coffee:dev'
+    'less',
+    'copy:dev'
   ]);
 
+  // Update link/script/template references in `assets` index.html
   grunt.registerTask('linkAssets', [
-
-    // Update link/script/template references in `assets` index.html
     'sails-linker:devJs',
     'sails-linker:devStyles',
     'sails-linker:devTpl',
@@ -452,9 +431,8 @@ module.exports = function (grunt) {
   grunt.registerTask('prod', [
     'clean:dev',
     'jst:dev',
-    'less:dev',
+    'less',
     'copy:dev',
-    'coffee:dev',
     'concat',
     'uglify',
     'cssmin',

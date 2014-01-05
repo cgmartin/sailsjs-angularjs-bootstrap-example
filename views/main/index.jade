@@ -1,0 +1,31 @@
+extends ../layout
+
+block body
+  .container
+    .row
+      h1
+        span.text-muted /
+        = ' Sails.js '
+        br
+        span.text-muted /
+        = ' AngularJS '
+        br
+        span.text-muted /
+        = ' Twitter Bootstrap'
+
+
+      .col-sm-12
+        h2 Examples
+        ul
+          li: a(href="/todos") Todo List
+
+        h2 New to Sails?
+        ul
+          li
+            a(href="http://sailsjs.org") Visit sailsjs.org
+          li
+            a(href="http://sailsjs.org/#!documentation") Documentation
+
+        div
+          em.text-muted You're looking at:&nbsp;
+            code views/main/index.jade

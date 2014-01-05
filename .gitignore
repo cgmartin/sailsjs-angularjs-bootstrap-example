@@ -5,7 +5,7 @@
 .waterline
 .rigging
 .tmp
-
+www
 
 ########################
 # node.js / npm
@@ -24,6 +24,7 @@ logs
 results
 
 node_modules
+bower_components
 
 npm-debug.log
 

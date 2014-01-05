@@ -1,23 +1,25 @@
-!!!
-html
+doctype html
+html(ng-app="app")
   head
     title= title
-
     // Viewport mobile tag for sensible mobile support
     meta(name="viewport",content="width=device-width, initial-scale=1, maximum-scale=1")
-
+    // STYLES
+    link(rel="stylesheet", href="/linker/styles/font-awesome.css")
+    link(rel="stylesheet", href="/linker/styles/bootstrap.css")
+    // STYLES END
     block styles
 
   body
     block body
 
-    // A few key dependencies, linked in order
-
-    // Bring in the socket.io client
-    script(type="text/javascript", src="/js/socket.io.js")
-
-    // then beef it up with some convenience logic for talking to Sails.js'
-    script(type="text/javascript", src="/js/sails.io.js")
-
-    // listen on socket.io for incoming messages
-    script(type="text/javascript", src="/js/app.js")
+    // SCRIPTS
+    script(type="text/javascript", src="/linker/js/jquery.js")
+    script(type="text/javascript", src="/linker/js/angular.js")
+    script(type="text/javascript", src="/linker/js/ui-bootstrap.js")
+    script(type="text/javascript", src="/linker/js/ui-bootstrap-tpls.js")
+    script(type="text/javascript", src="/linker/js/socket.io.js")
+    script(type="text/javascript", src="/linker/js/angular-socket.io.js")
+    script(type="text/javascript", src="/linker/js/angular-sails.io.js")
+    script(type="text/javascript", src="/linker/js/app.js")
+    // SCRIPTS END

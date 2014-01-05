@@ -1,21 +1,25 @@
 {
-    "name": "family-planner",
-    "private": true,
-    "version": "0.0.0",
-    "description": "a Sails application",
-    "dependencies": {
-        "sails": "0.9.8",
-        "grunt": "0.4.1",
-        "sails-disk": "~0.9.0",
-        "ejs": "0.8.4",
-        "optimist": "0.3.4"
-    },
-    "scripts": {
-        "start": "node app.js",
-        "debug": "node debug app.js"
-    },
-    "main": "app.js",
-    "repository": "",
-    "author": "",
-    "license": ""
+  "name": "sailsjs-angularjs-bootstrap-example",
+  "private": true,
+  "version": "0.0.0",
+  "description": "A Sails.js / AngularJS / Twitter Bootstrap example application",
+  "dependencies": {
+    "sails": "0.9.8",
+    "grunt": "0.4.2",
+    "sails-disk": "~0.9.0",
+    "optimist": "0.3.4",
+    "then-jade": "1.1.0",
+    "jade": "1.0.2"
+  },
+  "scripts": {
+    "start": "node app.js",
+    "debug": "node debug app.js"
+  },
+  "main": "app.js",
+  "repository": "",
+  "author": "Christopher Martin <cgmartin@gmail.com>",
+  "license": "MIT",
+  "devDependencies": {
+    "grunt-contrib-less": "~0.8.3"
+  }
 }
