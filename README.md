@@ -10,6 +10,7 @@ A Sails.js, AngularJS, Twitter Bootstrap example application
 - [Angular-UI Bootstrap](http://angular-ui.github.io/bootstrap/)
 - [Font Awesome](http://fontawesome.io/)
 - [Jade Templates](http://jade-lang.com/)
+- [Socket.io](http://socket.io/)
 - [Node.js](http://nodejs.org/api/)
 
 ## Installation

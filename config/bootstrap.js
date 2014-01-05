@@ -10,7 +10,32 @@
 
 module.exports.bootstrap = function (done) {
 
-  // It's very important to trigger this callack method when you are finished 
+  // It's very important to trigger this callack method when you are finished
   // with the bootstrap!  (otherwise your server will never lift, since it's waiting on the bootstrap)
-  done();
+  //done();
+
+  // Create dummy data
+  var dummyTodos = [
+    {
+      "title": "First todo",
+      "isComplete": false
+    },
+    {
+      "title": "Completed todo",
+      "isComplete": true
+    },
+    {
+      "title": "One more todo",
+      "isComplete": false
+    }
+  ];
+
+  Todo.count().exec(function(err, count) {
+    if (err) {
+      return done(err);
+    }
+    if (count > 0) return done();
+    Todo.create(dummyTodos).exec(done);
+  });
+
 };
