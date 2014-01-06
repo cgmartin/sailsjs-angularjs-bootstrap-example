@@ -126,9 +126,9 @@ angular.module('sails.io', ['btford.socket-io'])
               if (attempts < options.reconnectionAttempts) {
                 retry();
               } else {
+                $log.error('SailsSocket::failure');
                 // send failure event
                 $rootScope.$broadcast(options.eventPrefix + 'failure');
-                $log.error('SailsSocket::failure');
               }
             });
           }, options.reconnectionDelay(attempts++));

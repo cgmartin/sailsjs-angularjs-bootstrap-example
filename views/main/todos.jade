@@ -7,7 +7,7 @@ block body
         .panel.panel-default
           script(type="text/ng-template", id="todoModalContent.html")
             .modal-header
-              h3 Todo
+              h3.modal-title Todo
             .modal-body
               form(role="form")
                 .form-group
@@ -18,11 +18,16 @@ block body
               button.btn.btn-default(ng-click="cancel()") Cancel
               button.btn.btn-primary(ng-click="ok()") OK
 
+          script(type="text/ng-template", id="errorModalContent.html")
+            .modal-body
+              .alert.alert-danger.no-margin-bot
+                div: strong Error:
+                div {{socketError}}
+
           .panel-heading.clearfix
             a.pull-right(ng-click="openModal(newTodo)")
               i.fa.fa-plus
             h1.panel-title Todo List
-
 
           ul.list-group
             li.list-group-item(ng-repeat="todo in todos track by $index")
@@ -32,4 +37,10 @@ block body
                 i(ng-class="{ fa: true, 'fa-lg': true, 'fa-check-circle-o': todo.isComplete, 'fa-circle-o': !todo.isComplete }")
               = ' '
               span(ng-class="{ strikethru: todo.isComplete }") {{todo.title}}
+          .panel-footer.clearfix
+            span.pull-left
+              strong= '{{remainingCount}} '
+              ng-pluralize(count="remainingCount", when="{ one: 'item left', other: 'items left' }")
+            button.btn.btn-default.btn-xs.pull-right(ng-click="clearCompletedTodos()", ng-show="remainingCount < todos.length")
+              | Clear completed ({{todos.length - remainingCount}})
 

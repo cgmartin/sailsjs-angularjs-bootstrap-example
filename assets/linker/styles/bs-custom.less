@@ -5,9 +5,22 @@
   display: none !important;
 }
 
+.disable-select {
+  -webkit-touch-callout: none;
+  -webkit-user-select: none;
+  -khtml-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 [ng-click], [data-ng-click], [x-ng-click] {
   cursor: pointer;
+  .disable-select();
 }
 
 // Custom app styles
 .strikethru { text-decoration: line-through; }
+.no-margin-bot { margin-bottom: 0; }
+
+

@@ -9,7 +9,7 @@ app.factory('sailsSocket', function(sailsSocketFactory, $log) {
   var sailsSocket = sailsSocketFactory(customOptions);
 
   // Forward common events to $rootScope
-  sailsSocket.forward(['connect', 'message']);
+  sailsSocket.forward(['connect', 'message', 'disconnect']);
 
   return sailsSocket;
 });
