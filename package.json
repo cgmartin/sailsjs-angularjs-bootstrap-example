@@ -1,7 +1,7 @@
 {
   "name": "sailsjs-angularjs-bootstrap-example",
   "private": true,
-  "version": "0.0.0",
+  "version": "0.0.1",
   "description": "A Sails.js / AngularJS / Twitter Bootstrap example application",
   "dependencies": {
     "sails": "0.9.8",

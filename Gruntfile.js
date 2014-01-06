@@ -220,14 +220,14 @@ module.exports = function (grunt) {
     uglify: {
       dist: {
         src: ['.tmp/public/concat/production.js'],
-        dest: '.tmp/public/min/production.js'
+        dest: '.tmp/public/min/production-<%= pkg.version %>.js'
       }
     },
 
     cssmin: {
       dist: {
         src: ['.tmp/public/concat/production.css'],
-        dest: '.tmp/public/min/production.css'
+        dest: '.tmp/public/min/production-<%= pkg.version %>.css'
       }
     },
 
@@ -255,9 +255,9 @@ module.exports = function (grunt) {
           appRoot: '.tmp/public'
         },
         files: {
-          '.tmp/public/**/*.html': ['.tmp/public/min/production.js'],
-          'views/**/*.html': ['.tmp/public/min/production.js'],
-          'views/**/*.ejs': ['.tmp/public/min/production.js']
+          '.tmp/public/**/*.html': ['.tmp/public/min/production-<%= pkg.version %>.js'],
+          'views/**/*.html': ['.tmp/public/min/production-<%= pkg.version %>.js'],
+          'views/**/*.ejs': ['.tmp/public/min/production-<%= pkg.version %>.js']
         }
       },
 
@@ -285,9 +285,9 @@ module.exports = function (grunt) {
           appRoot: '.tmp/public'
         },
         files: {
-          '.tmp/public/index.html': ['.tmp/public/min/production.css'],
-          'views/**/*.html': ['.tmp/public/min/production.css'],
-          'views/**/*.ejs': ['.tmp/public/min/production.css']
+          '.tmp/public/index.html': ['.tmp/public/min/production-<%= pkg.version %>.css'],
+          'views/**/*.html': ['.tmp/public/min/production-<%= pkg.version %>.css'],
+          'views/**/*.ejs': ['.tmp/public/min/production-<%= pkg.version %>.css']
         }
       },
 
@@ -331,7 +331,7 @@ module.exports = function (grunt) {
           appRoot: '.tmp/public'
         },
         files: {
-          'views/**/*.jade': ['.tmp/public/min/production.js']
+          'views/**/*.jade': ['.tmp/public/min/production-<%= pkg.version %>.js']
         }
       },
 
@@ -355,7 +355,7 @@ module.exports = function (grunt) {
           appRoot: '.tmp/public'
         },
         files: {
-          'views/**/*.jade': ['.tmp/public/min/production.css']
+          'views/**/*.jade': ['.tmp/public/min/production-<%= pkg.version %>.css']
         }
       },
 
