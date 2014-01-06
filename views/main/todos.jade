@@ -25,7 +25,7 @@ block body
 
 
           ul.list-group
-            li.list-group-item(ng-repeat="todo in todos")
+            li.list-group-item(ng-repeat="todo in todos track by $index")
               a.pull-right(ng-click="openModal(todo)")
                 i.fa.fa-edit
               a(ng-click="toggleCompleted(todo)")

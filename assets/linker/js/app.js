@@ -24,9 +24,10 @@ app.controller('TodoController', function($scope, $modal, sailsSocket, $log) {
   });
 
   $scope.$on('sailsSocket:message', function(ev, data) {
+    // ex. {model: "todo", verb: "update", data: Object, id: 3}
     $log.debug('New comet message received :: ', data);
     if (data.model === 'todo') {
-      getTodoList();
+      getTodoList(); // TODO optimize by applying updates using verb instead of re-retrieving all
     }
   });
 
