@@ -1,25 +1,40 @@
-angular.module('sails.io', ['btford.socket-io'])
-  .factory('sailsSocket', function(socketFactory, $http, $timeout, $location, $rootScope, $log) {
+'use strict';
 
-    var sailsSocketOptions = {
-      maxRetry: 20,
-      backoff: function(attempt) {
+// TODO: Consider releasing this as a bower package once fleshed out
+// bower.json:
+// {
+//   "name": "angular-sails-io",
+//   "version": "0.0.1",
+//   "main": "angular-sails.io.js",
+//   "dependencies": {
+//     "angular-socket-io": "~0.3.0"
+//   },
+//   "devDependencies": {
+//     "angular-mocks": "~1.2.6"
+//   }
+// }
+
+angular.module('sails.io', ['btford.socket-io'])
+  .factory('sailsSocketFactory', function(socketFactory, $http, $timeout, $location, $rootScope, $log) {
+
+    var optionDefaults = {
+      url: null,
+      eventPrefix: 'sailsSocket:',
+      reconnectionAttempts: Infinity,
+      reconnectionDelay: function(attempt) {
+        var maxDelay = 10000;
         var bo = ((Math.pow(2, attempt) - 1) / 2);
-        bo = (bo < 60) ? bo : 60;
-        return bo;
+        var delay = 1000 * bo; // 1 sec x backoff amount
+        return Math.min(delay, maxDelay);
       }
     };
 
-    var ioSocket = io.connect(null, { reconnect: false });
-    var socketOptions = {
-      ioSocket: ioSocket,
-      prefix: 'sailsSocket:'
-    };
-    var sailsSocket = socketFactory(socketOptions);
+    /**
+     * Wraps emit for REST requests to Sails socket.io server
+     */
+    function requestAction (url, data, cb, method) {
 
-    function request (url, data, cb, method) {
-
-      var socket = this;
+      var socket = this; // The angular Sails Socket
 
       var usage = 'Usage:\n socket.' +
         (method || 'request') +
@@ -71,43 +86,56 @@ angular.module('sails.io', ['btford.socket-io'])
       });
     }
 
-    sailsSocket.ioSocket = ioSocket;
-    sailsSocket.request = request;
-    sailsSocket.get = function(url, data, cb) {
-      return this.request(url, data, cb, 'get');
-    };
-    sailsSocket.post = function(url, data, cb) {
-      return this.request(url, data, cb, 'post');
-    };
-    sailsSocket.put = function(url, data, cb) {
-      return this.request(url, data, cb, 'put');
-    };
-    sailsSocket['delete'] = function(url, data, cb) {
-      return this.request(url, data, cb, 'delete');
-    };
+    return function sailsSocketFactory (options) {
+      options = angular.extend({}, optionDefaults, options);
 
-    // Manually retry by first getting auth/session cookie
-    sailsSocket.on('disconnect', function() {
-      $log.warn('SailsSocket::disconnected');
-      var attempts = 0;
-      var retry = function() {
-        $log.info('SailsSocket::retrying... ', attempts);
-        $timeout(function() {
-          $http.get($location.path()).success(function(data, status) {
-            ioSocket.socket.connect();
-          }).error(function(data, status) {
-            if (attempts < sailsSocketOptions.maxRetry) {
-              retry();
-            } else {
-              // send failure event
-              $rootScope.$broadcast(socketOptions.prefix + 'failure');
-              $log.error('SailsSocket::failure');
-            }
-          });
-        }, 1000 * sailsSocketOptions.backoff(attempts++));
+      // Manually handle the socket.io connection
+      var ioSocket = io.connect(options.url, { reconnect: false });
+      var sailsSocket = socketFactory({
+        ioSocket: ioSocket,
+        prefix: options.eventPrefix
+      });
+
+      // Extend the angular-socket-io socket with sails utilities
+      sailsSocket.ioSocket = ioSocket;
+      sailsSocket.request = requestAction;
+      sailsSocket.get = function(url, data, cb) {
+        return this.request(url, data, cb, 'get');
       };
-      retry();
-    });
+      sailsSocket.post = function(url, data, cb) {
+        return this.request(url, data, cb, 'post');
+      };
+      sailsSocket.put = function(url, data, cb) {
+        return this.request(url, data, cb, 'put');
+      };
+      sailsSocket['delete'] = function(url, data, cb) {
+        return this.request(url, data, cb, 'delete');
+      };
 
-    return sailsSocket;
+      // Custom reconnect logic
+      sailsSocket.on('disconnect', function() {
+        $log.warn('SailsSocket::disconnected');
+        var attempts = 0;
+        var retry = function() {
+          $timeout(function() {
+            // Make http request before socket connect, to ensure auth/session cookie
+            $log.info('SailsSocket::retrying... ', attempts);
+            $http.get($location.path()).success(function(data, status) {
+              ioSocket.socket.connect();
+            }).error(function(data, status) {
+              if (attempts < options.reconnectionAttempts) {
+                retry();
+              } else {
+                // send failure event
+                $rootScope.$broadcast(options.eventPrefix + 'failure');
+                $log.error('SailsSocket::failure');
+              }
+            });
+          }, options.reconnectionDelay(attempts++));
+        };
+        if (attempts < options.reconnectionAttempts) retry();
+      });
+
+      return sailsSocket;
+    };
   });

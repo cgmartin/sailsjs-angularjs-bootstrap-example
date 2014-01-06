@@ -6,14 +6,14 @@
 - Twitter Bootstrap / Font Awesome custom compiles
 - Cache busting JS/CSS for production
 
-**Notes/Current Status** *(as of Jan 5, 2014)*
+**Notes/Current Status** *(as of Jan 6, 2014)*
 
 Contains a very preliminary AngularJS "Todo List" example that uses Sails REST calls through Socket.io.
 Be wary, this has been hacked together over a weekend as a Sails.js/AngularJS learning project.
 Do not consider this as production-ready code.
 
-I was curious about how the socket.io connection, the comet messages, and auto-subscriptions worked in Sails
-(see `TodoController` in `assets/linker/js/app.js`).
+The Todo app was written to explore how the socket.io connection, comet messages, and auto-subscriptions worked in
+Sails (see `assets/linker/js/controllers/todoCtrl.js`).
 The Sails socket.io code was refactored into an Angular service that wraps the `angular-socket-io` factory
 (see `assets/linker/js/angular-sails.io.js`). The retry logic may be of interest, since it first sends a `$http.get()`
 request to the server for obtaining the security token cookie, otherwise you'll get the `500 error: "handshake error"`
@@ -25,9 +25,8 @@ The Sails.js asset grunt tasks have been reconfigured to allow Twitter Bootstrap
 (see `/assets/linker/styles/*.less`).
 The grunt `copy` task has also been reconfigured to include other Bower-managed client-side libraries.
 
-This other repo may also be of interest, though it uses Sails v0.8:
-[levid/angular-sails-socketio-mongo-demo](https://github.com/levid/angular-sails-socketio-mongo-demo)
-
+The [levid/angular-sails-socketio-mongo-demo](https://github.com/levid/angular-sails-socketio-mongo-demo) repo
+may also be of interest for Angular/Sails integration, though it uses Sails v0.8:
 
 ## Utilizes...
 
@@ -43,9 +42,14 @@ This other repo may also be of interest, though it uses Sails v0.8:
 
 ## Installation
 
-Make sure you have sails and bower installed:
+Ensure that sails and bower are installed:
 ```sh
 sudo npm -g install sails bower
+```
+
+Clone this repo:
+```sh
+git clone https://github.com/cgmartin/sailsjs-angularjs-bootstrap-example.git
 ```
 
 Run `npm` and `bower` to install all dependencies:
