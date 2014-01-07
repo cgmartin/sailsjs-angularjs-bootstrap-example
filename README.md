@@ -12,14 +12,15 @@ Contains a very preliminary AngularJS "Todo List" example that uses Sails REST c
 Be wary, this has been hacked together over a weekend as a Sails.js/AngularJS learning project.
 Do not consider this as production-ready code.
 
-The Todo app was written to explore how the socket.io connection, comet messages, and auto-subscriptions worked in
-Sails (see `assets/linker/js/controllers/todoCtrl.js`).
+The Todo app was written to explore how the socket.io connection, comet messages, and auto-subscriptions
+work in Sails (see `assets/linker/js/controllers/todoCtrl.js`).
 The Sails socket.io code was refactored into an Angular service (see `assets/linker/js/angular-sails.io.js`).
 The custom retry logic first sends a `$http.get()` request to the server for obtaining the security token cookie,
 otherwise you can encounter the `500 error: "handshake error"`
-(See [FAQ](http://sailsjs.org/#!documentation/sockets) at bottom).
+(See bottom of [FAQ](http://sailsjs.org/#!documentation/sockets) page).
 
-If you stop the server or cause a network disconnect on the Todo App page, you should see some alert modals pop up.
+If you stop the server or cause a network disconnect when on the Todo App page, you should see
+some alert modals pop up.
 These are managed by SailsSocketCtrl (see `assets/linker/js/controllers/sailsSocketCtrl.js`)
 for reuse in other examples.
 

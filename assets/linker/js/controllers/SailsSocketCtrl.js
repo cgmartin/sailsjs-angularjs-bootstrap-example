@@ -31,6 +31,11 @@ app.controller('SailsSocketCtrl', function TodoCtrl($scope, $modal, sailsSocket)
   //
   // Listen for Sails/Socket events
   //
+  // NOTE:
+  // The `sailsSocket` factory forwards several of socket.io's events
+  // to angular's $rootScope. See the `eventForwards` option inside
+  // of `angular-sails.io.js` for details.
+  //
   $scope.$on('sailsSocket:connect', function(ev, data) {
     closeSocketErrorModal();
   });
