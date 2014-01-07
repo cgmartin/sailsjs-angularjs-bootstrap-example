@@ -6,11 +6,10 @@
 - Twitter Bootstrap / Font Awesome custom compiles
 - Cache busting JS/CSS for production
 
-**Notes/Current Status** *(as of Jan 6, 2014)*
+**Notes/Current Status** *(as of Jan 7, 2014)*
 
-Contains a very preliminary AngularJS "Todo List" example that uses Sails REST calls through Socket.io.
-Be wary, this has been hacked together over a weekend as a Sails.js/AngularJS learning project.
-Do not consider this as production-ready code.
+Be wary, this repo has been hacked together over a weekend as a Sails.js/AngularJS learning project.
+Do not consider it as production-ready code.
 
 The Todo app was written to explore how the socket.io connection, comet messages, and auto-subscriptions
 work in Sails (see `assets/linker/js/controllers/todoCtrl.js`).
