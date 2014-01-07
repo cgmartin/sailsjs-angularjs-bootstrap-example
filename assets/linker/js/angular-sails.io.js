@@ -1,25 +1,27 @@
 'use strict';
 
-// TODO: Consider releasing this as a bower package once fleshed out
-// bower.json:
-// {
-//   "name": "angular-sails-io",
-//   "version": "0.0.1",
-//   "main": "angular-sails.io.js",
-//   "dependencies": {
-//     "angular-socket-io": "~0.3.0"
-//   },
-//   "devDependencies": {
-//     "angular-mocks": "~1.2.6"
-//   }
-// }
+/*
+ * Remixed from:
+ *
+ *   angular-socket-io v0.3.0
+ *   (c) 2014 Brian Ford http://briantford.com
+ *   License: MIT
+ *
+ * ...and...
+ *
+ *   sails.io.js v0.9.8
+ *   (c) 2012-2014 Mike McNeil http://sailsjs.org/
+ *   License: MIT
+ */
 
-angular.module('sails.io', ['btford.socket-io'])
-  .factory('sailsSocketFactory', function(socketFactory, $http, $timeout, $location, $rootScope, $log) {
+angular.module('sails.io', [])
+  .factory('sailsSocketFactory', function($rootScope, $http, $timeout, $location, $log) {
 
     var optionDefaults = {
       url: null,
+      defaultScope: $rootScope,
       eventPrefix: 'sailsSocket:',
+      eventForwards: ['connect', 'message', 'disconnect', 'error'],
       reconnectionAttempts: Infinity,
       reconnectionDelay: function(attempt) {
         var maxDelay = 10000;
@@ -72,70 +74,170 @@ angular.module('sails.io', ['btford.socket-io'])
             parsedResult = io.JSON.parse(result);
           } catch (e) {
             $log.warn("Could not parse:", result, e);
-            // TODO: Handle errors more effectively
-            throw new Error("Server response could not be parsed!\n" + result);
+            parsedResult = { error: { message: 'Bad response from server' }};
           }
         }
 
-        // TODO: Handle errors more effectively
-        if (parsedResult === 404) throw new Error("404: Not found");
-        if (parsedResult === 403) throw new Error("403: Forbidden");
-        if (parsedResult === 500) throw new Error("500: Server error");
+        // Handle HTTP status code errors
+        switch(parsedResult) {
+          case 404:
+            parsedResult = { error: { message: '404: Not found' }};
+            break;
+          case 403:
+            parsedResult = { error: { message: '403: Forbidden' }};
+            break;
+          case 500:
+            parsedResult = { error: { message: '500: Server error' }};
+            break;
+        }
 
         cb && cb(parsedResult);
       });
     }
 
+    function asyncAngularify(socket, callback) {
+      return callback ? function () {
+        var args = arguments;
+        $timeout(function () {
+          callback.apply(socket, args);
+        }, 0);
+      } : angular.noop;
+    }
+
+    function addSocketListener(eventName, callback) {
+      this.ioSocket.on(eventName, asyncAngularify(this.ioSocket, callback));
+    }
+
+    function removeSocketListener() {
+      return this.ioSocket.removeListener.apply(this.ioSocket, arguments);
+    }
+
     return function sailsSocketFactory (options) {
-      options = angular.extend({}, optionDefaults, options);
+      var sailsSocket = {
+        options:        optionDefaults,
+        ioSocket:       null,
+        on:             addSocketListener,
+        addListener:    addSocketListener,
+        off:            removeSocketListener,
+        removeListener: removeSocketListener,
 
-      // Manually handle the socket.io connection
-      var ioSocket = io.connect(options.url, { reconnect: false });
-      var sailsSocket = socketFactory({
-        ioSocket: ioSocket,
-        prefix: options.eventPrefix
-      });
+        canReconnect:   true,
+        disconnectRetryTimer: null,
 
-      // Extend the angular-socket-io socket with sails utilities
-      sailsSocket.ioSocket = ioSocket;
-      sailsSocket.request = requestAction;
-      sailsSocket.get = function(url, data, cb) {
-        return this.request(url, data, cb, 'get');
-      };
-      sailsSocket.post = function(url, data, cb) {
-        return this.request(url, data, cb, 'post');
-      };
-      sailsSocket.put = function(url, data, cb) {
-        return this.request(url, data, cb, 'put');
-      };
-      sailsSocket['delete'] = function(url, data, cb) {
-        return this.request(url, data, cb, 'delete');
-      };
+        //
+        // REST calls
+        //
+        request: requestAction,
+        get: function(url, data, cb) {
+          return this.request(url, data, cb, 'get');
+        },
+        post: function(url, data, cb) {
+          return this.request(url, data, cb, 'post');
+        },
+        put: function(url, data, cb) {
+          return this.request(url, data, cb, 'put');
+        },
+        delete: function(url, data, cb) {
+          return this.request(url, data, cb, 'delete');
+        },
+        emit: function (eventName, data, callback) {
+          return this.ioSocket.emit(eventName, data, asyncAngularify(this.ioSocket, callback));
+        },
 
-      // Custom reconnect logic
-      sailsSocket.on('disconnect', function() {
-        $log.warn('SailsSocket::disconnected');
-        var attempts = 0;
-        var retry = function() {
-          $timeout(function() {
-            // Make http request before socket connect, to ensure auth/session cookie
-            $log.info('SailsSocket::retrying... ', attempts);
-            $http.get($location.path()).success(function(data, status) {
-              ioSocket.socket.connect();
-            }).error(function(data, status) {
-              if (attempts < options.reconnectionAttempts) {
-                retry();
-              } else {
-                $log.error('SailsSocket::failure');
-                // send failure event
-                $rootScope.$broadcast(options.eventPrefix + 'failure');
-              }
+        // when socket.on('someEvent', fn (data) { ... }),
+        // call scope.$broadcast('someEvent', data)
+        forward: function (events, scope) {
+          if (events instanceof Array === false) {
+            events = [events];
+          }
+          if (!scope) {
+            scope = this.options.defaultScope;
+          }
+          angular.forEach(events, function (eventName) {
+            var prefixedEvent = this.options.eventPrefix + eventName;
+            var forwardBroadcast = asyncAngularify(this.ioSocket, function (data) {
+              scope.$broadcast(prefixedEvent, data);
             });
-          }, options.reconnectionDelay(attempts++));
-        };
-        if (attempts < options.reconnectionAttempts) retry();
-      });
+            scope.$on('$destroy', function () {
+              this.ioSocket.removeListener(eventName, forwardBroadcast);
+            });
+            this.ioSocket.on(eventName, forwardBroadcast);
+          }, this);
+        },
 
-      return sailsSocket;
+        disconnect: function() {
+          this.canReconnect = false;
+          $timeout.cancel(this.disconnectRetryTimer);
+          this.removeRetryListeners();
+          this.ioSocket.disconnect();
+        },
+
+        connect: function(options) {
+          if (this.ioSocket) this.disconnect();
+          angular.extend(this.options, options);
+
+          this.ioSocket = io.connect(this.options.url, { reconnect: false });
+          this.forward(this.options.eventForwards);
+          this.canReconnect = true;
+          this.addRetryListeners();
+          return this;
+        },
+
+        //
+        // Custom retry logic
+        //
+        addRetryListeners: function() {
+          this.on('disconnect', this.onDisconnect);
+          this.on('error', this.onError);
+          this.on('connect', this.onConnect);
+        },
+
+        removeRetryListeners: function() {
+          this.off('disconnect', this.onDisconnect);
+          this.off('error', this.onError);
+          this.off('connect', this.onConnect);
+        },
+
+        // *disconnect* occurs after a connection has been made.
+        onDisconnect: function() {
+          $log.warn('SailsSocket::disconnected');
+          var attempts = 0;
+          var retry = function() {
+            if (!sailsSocket.canReconnect) return;
+
+            sailsSocket.disconnectRetryTimer = $timeout(function() {
+              // Make http request before socket connect, to ensure auth/session cookie
+              $log.info('SailsSocket::retrying... ', attempts);
+              $http.get($location.path()).success(function(data, status) {
+                sailsSocket.ioSocket.socket.connect();
+              }).error(function(data, status) {
+                  if (attempts < sailsSocket.options.reconnectionAttempts) {
+                    retry();
+                  } else {
+                    // send failure event
+                    $log.error('SailsSocket::failure');
+                    $rootScope.$broadcast(sailsSocket.options.eventPrefix + 'failure');
+                  }
+                });
+            }, sailsSocket.options.reconnectionDelay(attempts++));
+          };
+
+          if (attempts < sailsSocket.options.reconnectionAttempts) retry();
+        },
+
+        // *error* occurs when the initial connection fails.
+        onError: function() {
+          $timeout(function() {
+            $log.error('SailsSocket::failure');
+            $rootScope.$broadcast(sailsSocket.options.eventPrefix + 'failure');
+          }, 0);
+        },
+
+        onConnect: function() {
+          $log.debug('SailsSocket::connected');
+        }
+      };
+
+      return sailsSocket.connect(options);
     };
   });

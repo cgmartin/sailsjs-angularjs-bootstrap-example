@@ -57,6 +57,9 @@ app.controller('TodoCtrl', function TodoCtrl($scope, $modal, sailsSocket, $log, 
     }
   });
 
+  //
+  // Edit / New Todo modal
+  //
   $scope.openModal = function (todo) {
     var modalInstance = $modal.open({
       templateUrl: 'todoModalContent.html',
@@ -68,13 +71,17 @@ app.controller('TodoCtrl', function TodoCtrl($scope, $modal, sailsSocket, $log, 
       }
     });
 
-    modalInstance.result.then(function (todo) {
-      $log.debug('Modal OK:', todo);
-      todo.title = todo.title.trim();
-      if (todo.id !== undefined) {
-        sailsSocket.put('/todo/' + todo.id, todo);
+    modalInstance.result.then(function (result) {
+      var todo = result.todo;
+      if (result.action == 'delete') {
+        sailsSocket.delete('/todo/' + todo.id);
       } else {
-        sailsSocket.post('/todo', todo);
+        todo.title = todo.title.trim();
+        if (todo.id !== undefined) {
+          sailsSocket.put('/todo/' + todo.id, todo);
+        } else {
+          sailsSocket.post('/todo', todo);
+        }
       }
     }, function () {
       $log.info('Modal dismissed at: ' + new Date());
@@ -102,8 +109,8 @@ function TodoModalCtrl($scope, $modalInstance, todo) {
 
   $scope.todo = todo;
 
-  $scope.ok = function () {
-    $modalInstance.close($scope.todo);
+  $scope.ok = function (action) {
+    $modalInstance.close({ action: action, todo: $scope.todo });
   };
 
   $scope.cancel = function () {

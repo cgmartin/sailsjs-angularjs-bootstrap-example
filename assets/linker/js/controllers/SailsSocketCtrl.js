@@ -1,11 +1,11 @@
 'use strict';
 
-app.controller('SailsSocketCtrl', function TodoCtrl($scope, $modal, sailsSocket, $log) {
+app.controller('SailsSocketCtrl', function TodoCtrl($scope, $modal, sailsSocket) {
 
   var socketErrorModal = null;
   function closeSocketErrorModal() {
     if (socketErrorModal) {
-      socketErrorModal.close();
+      socketErrorModal.dismiss();
       socketErrorModal = null;
     }
   }
@@ -32,18 +32,15 @@ app.controller('SailsSocketCtrl', function TodoCtrl($scope, $modal, sailsSocket,
   // Listen for Sails/Socket events
   //
   $scope.$on('sailsSocket:connect', function(ev, data) {
-    $log.debug('sailsSocket::connected');
     closeSocketErrorModal();
   });
 
   $scope.$on('sailsSocket:disconnect', function(ev, data) {
-    $log.warn('sailsSocket::disconnected');
-    openSocketErrorModal('The application has disconnected from the server... Please wait.');
+    openSocketErrorModal('The application cannot reach the server... Please wait.');
   });
 
   $scope.$on('sailsSocket:failure', function(ev, data) {
-    $log.error('sailsSocket::failure');
-    openSocketErrorModal('The application has given up trying to reconnect. Goodbye!');
+    openSocketErrorModal('The application failed to connect to the server.');
   });
 
 });
