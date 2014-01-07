@@ -1,15 +1,31 @@
 # sailsjs-angularjs-bootstrap-example
 
-> A Sails.js, AngularJS, Twitter Bootstrap example application.
+> A suite of examples written for a Sails.js, AngularJS, Twitter Bootstrap application.
 
-- "Todo List" AngularJS app w/ Sails Socket.io REST
+Contents:
+
+- REST API call test page using HTTP and Socket.io modes
+- "Todo List" app using Sails Socket.io REST
 - Twitter Bootstrap / Font Awesome custom compiles
 - Cache busting JS/CSS for production
 
-**Notes/Current Status** *(as of Jan 7, 2014)*
+Upcoming/Todo/In-Progress:
+
+- Passport integration
+- Chat Room app
+
+If there other examples you would like to see, feel free to
+[create a GitHub issue](https://github.com/cgmartin/sailsjs-angularjs-bootstrap-example/issues/new).
+
+**Notes** *(as of Jan 7, 2014)*
 
 Be wary, this repo has been hacked together over a weekend as a Sails.js/AngularJS learning project.
 Do not consider it as production-ready code.
+
+The REST API example page (see `assets/linker/js/controllers/restCtrl.js`)
+tries to exercise the error handling between HTTP and Socket modes.
+I am currently seeing some odd behavior in HTTP mode when throwing application errors,
+and in Socket mode when handling of forbidden errors. More research is needed.
 
 The Todo app was written to explore how the socket.io connection, comet messages, and auto-subscriptions
 work in Sails (see `assets/linker/js/controllers/todoCtrl.js`).
@@ -18,7 +34,7 @@ The custom retry logic first sends a `$http.get()` request to the server for obt
 otherwise you can encounter the `500 error: "handshake error"`
 (See bottom of [FAQ](http://sailsjs.org/#!documentation/sockets) page).
 
-If you stop the server or cause a network disconnect when on the Todo App page, you should see
+If you stop the server or cause a network disconnect when on the example pages, you should see
 some alert modals pop up.
 These are managed by SailsSocketCtrl (see `assets/linker/js/controllers/sailsSocketCtrl.js`)
 for reuse in other examples.
