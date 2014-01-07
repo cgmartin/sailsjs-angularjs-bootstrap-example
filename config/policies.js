@@ -16,7 +16,12 @@ module.exports.policies = {
 
   // Default policy for all controllers and actions
   // (`true` allows public access) 
-  '*': true
+  '*': true,
+
+  RestErrorController: {
+    unauthorized: 'isAuthorized',
+    forbidden:    false           // Acts oddly in socket mode?
+  }
 
   /*
 	// Here's an example of adding some policies to a controller

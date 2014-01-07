@@ -36,12 +36,16 @@ app.controller('SailsSocketCtrl', function TodoCtrl($scope, $modal, sailsSocket)
   // to angular's $rootScope. See the `eventForwards` option inside
   // of `angular-sails.io.js` for details.
   //
+  $scope.socketReady = false; // Wait for socket to connect
+
   $scope.$on('sailsSocket:connect', function(ev, data) {
     closeSocketErrorModal();
+    $scope.socketReady = true;
   });
 
   $scope.$on('sailsSocket:disconnect', function(ev, data) {
     openSocketErrorModal('The application cannot reach the server... Please wait.');
+    $scope.socketReady = false;
   });
 
   $scope.$on('sailsSocket:failure', function(ev, data) {

@@ -78,19 +78,6 @@ angular.module('sails.io', [])
           }
         }
 
-        // Handle HTTP status code errors
-        switch(parsedResult) {
-          case 404:
-            parsedResult = { error: { message: '404: Not found' }};
-            break;
-          case 403:
-            parsedResult = { error: { message: '403: Forbidden' }};
-            break;
-          case 500:
-            parsedResult = { error: { message: '500: Server error' }};
-            break;
-        }
-
         cb && cb(parsedResult);
       });
     }

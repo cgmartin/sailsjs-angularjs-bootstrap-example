@@ -1,0 +1,46 @@
+extends ../layout
+
+block body
+  .container.ng-cloak(ng-controller="SailsSocketCtrl")
+    .row
+      .col-sm-10.col-sm-offset-1.col-md-8.col-md-offset-2
+        .panel.panel-default(ng-controller="RestCtrl")
+          .panel-heading.clearfix
+            h1.panel-title REST Call Examples
+
+          ul.list-group
+            li.list-group-item
+              h3.list-group-item-heading Echo Test
+              p: em.text-muted
+                code post /echo
+                = ' : Echos a message back to the client'
+              .input-group
+                input.form-control(type="text", ng-model="echoText", ng-trim="true")
+                .input-group-btn
+                  a.btn.btn-default(ng-click="callEcho('socket')", ng-show="socketReady") Socket
+                  a.btn.btn-default(ng-click="callEcho('http')") HTTP
+              alert.margin-top-sm.no-margin-bot(ng-repeat="alert in echoTestAlerts",
+                  type="alert.type", close="closeEchoAlert()")
+                strong {{ alert.httpOrSocket | uppercase }}[{{alert.status}}]:
+                br
+                | {{ alert.msg | json }}
+                div: em.small.text-muted ({{alert.timestamp.toLocaleTimeString()}})
+
+            li.list-group-item
+              h3.list-group-item-heading Error Scenarios
+              div(ng-repeat="scenario in errorScenarios")
+                h4.margin-top-lg {{scenario.title}}
+                p: em.text-muted
+                  code {{scenario.method}} {{scenario.url}}
+                .btn-group
+                  a.btn.btn-default(ng-click="callErrorScenario('socket', scenario)", ng-show="socketReady") Socket
+                  a.btn.btn-default(ng-click="callErrorScenario('http', scenario)") HTTP
+                alert.margin-top-sm.no-margin-bot(ng-repeat="alert in errorAlerts[scenario.key]",
+                    type="alert.type", close="closeErrorAlert(scenario.key)")
+                  strong {{ alert.httpOrSocket | uppercase }}[{{alert.status}}]:
+                  br
+                  | {{ alert.msg | json | limitTo:500 }}
+                  div: em.small.text-muted ({{alert.timestamp.toLocaleTimeString()}})
+
+
+

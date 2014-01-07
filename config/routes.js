@@ -38,6 +38,9 @@ module.exports.routes = {
   '/todos': {
     controller: 'MainController',
     action: 'todos'
+  },
+  '/rest-examples': {
+    view: 'main/rest'
   }
 
   /*

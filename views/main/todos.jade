@@ -42,9 +42,4 @@ block body
       button.btn.btn-danger(ng-click="ok('delete')", ng-show="todo.id") Delete
       button.btn.btn-primary(ng-click="ok('save')") Save
 
-  script(type="text/ng-template", id="errorModalContent.html")
-    .modal-body
-      .alert.alert-danger.no-margin-bot
-        div: strong Error:
-        div {{error.message}}
 
