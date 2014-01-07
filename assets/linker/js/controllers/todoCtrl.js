@@ -16,15 +16,10 @@ app.controller('TodoCtrl', function TodoCtrl($scope, $modal, sailsSocket, $log, 
     return index;
   }
 
-  var socketErrorModal = null;
-
   //
   // Listen for Sails/Socket events
   //
   $scope.$on('sailsSocket:connect', function(ev, data) {
-    $log.debug('sailsSocket::connected');
-    if (socketErrorModal) socketErrorModal.close();
-
     // Get full collection of todos
     sailsSocket.get(
       '/todo?sort=id%20DESC', {},
@@ -60,21 +55,6 @@ app.controller('TodoCtrl', function TodoCtrl($scope, $modal, sailsSocket, $log, 
       }
       $scope.remainingCount = filterFilter($scope.todos, {isComplete: false}).length;
     }
-  });
-
-  $scope.$on('sailsSocket:disconnect', function(ev, data) {
-    $log.warn('Socket.io disconnected');
-    $scope.socketError = 'The application has disconnected from the server... Please wait.';
-    socketErrorModal = $modal.open({
-      templateUrl: 'errorModalContent.html',
-      backdrop: 'static',
-      keyboard: false,
-      scope: $scope
-    });
-  });
-  $scope.$on('sailsSocket:failure', function(ev, data) {
-    $log.error('Socket.io total failure');
-    $scope.socketError = 'The application has given up trying to reconnect. Goodbye!';
   });
 
   $scope.openModal = function (todo) {

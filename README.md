@@ -26,7 +26,7 @@ The Sails.js asset grunt tasks have been reconfigured to allow Twitter Bootstrap
 The grunt `copy` task has also been reconfigured to include other Bower-managed client-side libraries.
 
 The [levid/angular-sails-socketio-mongo-demo](https://github.com/levid/angular-sails-socketio-mongo-demo) repo
-may also be of interest for Angular/Sails integration, though it uses Sails v0.8:
+may also be of interest for Angular/Sails integration, though it uses Sails v0.8.
 
 ## Utilizes...
 

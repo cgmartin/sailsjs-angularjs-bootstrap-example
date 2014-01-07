@@ -1,29 +1,10 @@
 extends ../layout
 
 block body
-  .container.ng-cloak(ng-controller="TodoCtrl")
+  .container.ng-cloak(ng-controller="SailsSocketCtrl")
     .row
-      .col-xs-12
-        .panel.panel-default
-          script(type="text/ng-template", id="todoModalContent.html")
-            .modal-header
-              h3.modal-title Todo
-            .modal-body
-              form(role="form")
-                .form-group
-                  label(for="todoTitle") Title
-                  input.form-control(type="text", id="todoTitle",
-                    placeholder="My todo item...", ng-model="todo.title")
-            .modal-footer
-              button.btn.btn-default(ng-click="cancel()") Cancel
-              button.btn.btn-primary(ng-click="ok()") OK
-
-          script(type="text/ng-template", id="errorModalContent.html")
-            .modal-body
-              .alert.alert-danger.no-margin-bot
-                div: strong Error:
-                div {{socketError}}
-
+      .col-sm-8.col-sm-offset-2.col-md-6.col-md-offset-3
+        .panel.panel-default(ng-controller="TodoCtrl")
           .panel-heading.clearfix
             a.pull-right(ng-click="openModal(newTodo)")
               i.fa.fa-plus
@@ -43,4 +24,26 @@ block body
               ng-pluralize(count="remainingCount", when="{ one: 'item left', other: 'items left' }")
             button.btn.btn-default.btn-xs.pull-right(ng-click="clearCompletedTodos()", ng-show="remainingCount < todos.length")
               | Clear completed ({{todos.length - remainingCount}})
+
+  script(type="text/ng-template", id="todoModalContent.html")
+    .modal-header
+      h3.modal-title
+        span(ng-show="todo.id") Edit
+        span(ng-hide="todo.id") New
+        = ' Todo'
+    .modal-body
+      form(role="form")
+        .form-group
+          label(for="todoTitle") Title
+          input.form-control(type="text", id="todoTitle",
+            placeholder="My todo item...", ng-model="todo.title")
+    .modal-footer
+      button.btn.btn-default(ng-click="cancel()") Cancel
+      button.btn.btn-primary(ng-click="ok()") OK
+
+  script(type="text/ng-template", id="errorModalContent.html")
+    .modal-body
+      .alert.alert-danger.no-margin-bot
+        div: strong Error:
+        div {{error.message}}
 
