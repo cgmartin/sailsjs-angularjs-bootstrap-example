@@ -18,7 +18,7 @@ angular.module('sails.io', [])
   .factory('sailsSocketFactory', function($rootScope, $http, $timeout, $location, $log) {
 
     var optionDefaults = {
-      url: null,
+      url: $location.path(),
       defaultScope: $rootScope,
       eventPrefix: 'sailsSocket:',
       eventForwards: ['connect', 'message', 'disconnect', 'error'],
@@ -114,7 +114,7 @@ angular.module('sails.io', [])
 
     return function sailsSocketFactory (options) {
       var sailsSocket = {
-        options:        optionDefaults,
+        options:        angular.extend({}, optionDefaults, options),
         ioSocket:       null,
         on:             addSocketListener,
         addListener:    addSocketListener,
@@ -208,7 +208,7 @@ angular.module('sails.io', [])
             sailsSocket.disconnectRetryTimer = $timeout(function() {
               // Make http request before socket connect, to ensure auth/session cookie
               $log.info('SailsSocket::retrying... ', attempts);
-              $http.get($location.path()).success(function(data, status) {
+              $http.get(sailsSocket.options.url).success(function(data, status) {
                 sailsSocket.ioSocket.socket.connect();
               }).error(function(data, status) {
                   if (attempts < sailsSocket.options.reconnectionAttempts) {
@@ -238,6 +238,6 @@ angular.module('sails.io', [])
         }
       };
 
-      return sailsSocket.connect(options);
+      return sailsSocket;
     };
   });

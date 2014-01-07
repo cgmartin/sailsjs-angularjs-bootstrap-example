@@ -31,7 +31,10 @@ app.controller('TodoCtrl', function TodoCtrl($scope, $modal, sailsSocket, $log, 
   });
 
   $scope.$on('sailsSocket:message', function(ev, data) {
-    // ex. {model: "todo", verb: "update", data: Object, id: 3}
+    // Example messages:
+    //   {model: "todo", verb: "create", data: Object, id: 25}
+    //   {model: "todo", verb: "update", data: Object, id: 3}
+    //   {model: "todo", verb: "destroy", id: 20}
     $log.debug('New comet message received :: ', data);
 
     if (data.model === 'todo') {

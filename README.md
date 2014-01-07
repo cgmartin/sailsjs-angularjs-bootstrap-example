@@ -14,12 +14,14 @@ Do not consider this as production-ready code.
 
 The Todo app was written to explore how the socket.io connection, comet messages, and auto-subscriptions worked in
 Sails (see `assets/linker/js/controllers/todoCtrl.js`).
-The Sails socket.io code was refactored into an Angular service that wraps the `angular-socket-io` factory
-(see `assets/linker/js/angular-sails.io.js`). The retry logic may be of interest, since it first sends a `$http.get()`
-request to the server for obtaining the security token cookie, otherwise you'll get the `500 error: "handshake error"`
-from socket.io's automatic reconnect logic. The Todo app could use better handling during disconnects and
-api errors (among other obvious features), which is the next thing I'd like to spent time on before moving
-on to another example.
+The Sails socket.io code was refactored into an Angular service (see `assets/linker/js/angular-sails.io.js`).
+The custom retry logic first sends a `$http.get()` request to the server for obtaining the security token cookie,
+otherwise you can encounter the `500 error: "handshake error"`
+(See [FAQ](http://sailsjs.org/#!documentation/sockets) at bottom).
+
+If you stop the server or cause a network disconnect on the Todo App page, you should see some alert modals pop up.
+These are managed by SailsSocketCtrl (see `assets/linker/js/controllers/sailsSocketCtrl.js`)
+for reuse in other examples.
 
 The Sails.js asset grunt tasks have been reconfigured to allow Twitter Bootstrap and Font Awesome custom compiles
 (see `/assets/linker/styles/*.less`).
