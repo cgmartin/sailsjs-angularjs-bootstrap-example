@@ -15,9 +15,11 @@ If there other examples you would like to see, feel free to
 
 ## Screenshots ##
 
+![APITestScreenshot](https://github.com/cgmartin/sailsjs-angularjs-bootstrap-example/raw/master/screenshots/APITestScreenshot.png)
+
 ![TodoAppScreenshot](https://github.com/cgmartin/sailsjs-angularjs-bootstrap-example/raw/master/screenshots/TodoAppScreenshot.png)
 
-![APITestScreenshot](https://github.com/cgmartin/sailsjs-angularjs-bootstrap-example/raw/master/screenshots/APITestScreenshot.png)
+![LoginPageScreenshot](https://github.com/cgmartin/sailsjs-angularjs-bootstrap-example/raw/master/screenshots/LoginPageScreenshot.png)
 
 ## Notes ##
 *(as of Jan 7, 2014)*

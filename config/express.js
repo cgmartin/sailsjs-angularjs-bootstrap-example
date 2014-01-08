@@ -8,7 +8,6 @@ module.exports.express = {
     // @theangryangel https://gist.github.com/theangryangel/5060446
     // @Mantish https://gist.github.com/Mantish/6366642
     // @anhnt https://gist.github.com/anhnt/8297229
-    console.log('Passport Auth Middleware initialized');
     app.use(passport.initialize());
     app.use(passport.session());
   }
