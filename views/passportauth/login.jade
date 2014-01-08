@@ -1,0 +1,29 @@
+extends ../layout
+
+block body
+  .container
+    .row
+      .col-sm-10.col-sm-offset-1.col-md-8.col-md-offset-2
+        .panel.panel-primary
+          .panel-heading.clearfix
+            h1.panel-title Login
+          .panel-body
+            if message != ''
+              .alert.alert-danger= message
+            .col-sm-offset-2.col-sm-10
+              p: em.text-muted test / test123
+            form.form-horizontal(role="form", action="/login", method="post")
+              .form-group
+                label.col-sm-2.control-label(for="loginUsername") Username
+                .col-sm-10
+                  input.form-control(type="text", id="loginUsername", name="username", placeholder="Username", value=username)
+              .form-group
+                label.col-sm-2.control-label(for="loginPassword") Password
+                .col-sm-10
+                  input.form-control(type="password", id="loginPassword", name="password", placeholder="Password")
+              .form-group
+                .col-sm-offset-2.col-sm-10
+                  button.btn.btn-default(type="submit") Sign in
+
+
+

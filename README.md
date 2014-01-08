@@ -6,6 +6,7 @@ Contents:
 
 - A REST API test page using Sails' transport agnostic routing (HTTP vs. Socket.io)
 - A "Todo List" app demo using Sails' Socket.io messaging and REST Blueprints
+- Passport middleware authentication integrated with Sails policies.
 - Twitter Bootstrap / Font Awesome custom LESS compiles (Grunt)
 - Cache busting JS/CSS for production (Grunt)
 
@@ -49,6 +50,26 @@ If you stop the server or cause a network disconnect when on the example pages,
 you should see some alert modals pop up. These are managed by SailsSocketCtrl
 (see `assets/linker/js/controllers/sailsSocketCtrl.js`) for reuse across examples.
 
+**Passport Integration**
+
+Credit goes to [this gist](https://gist.github.com/theangryangel/5060446)
+and its many forks.
+
+You can log in using the dummy user/pass: `test/test123`.
+
+Here are the files that were touched:
+```
+api/controllers/PassportAuthController.js
+api/models/User.js
+api/policies/isPassportAuthenticated.js
+config/bootstrap.js
+config/express.js
+config/policies.js
+config/routes.js
+views/passportauth/login.jade
+views/passportauth/protected.jade
+```
+
 **Grunt changes**
 
 The Sails.js asset grunt tasks have been reconfigured to allow Twitter Bootstrap
@@ -73,6 +94,7 @@ repo may also be of interest for Sails v0.8 users.
 - [Font Awesome](http://fontawesome.io/)
 - [Jade Templates](http://jade-lang.com/)
 - [Socket.io](http://socket.io/)
+- [Passport](http://passportjs.org/)
 - [Node.js](http://nodejs.org/api/)
 - [Bower](http://bower.io/)
 

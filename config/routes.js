@@ -35,13 +35,21 @@ module.exports.routes = {
   '/': {
     view: 'main/index'
   },
-  '/todos': {
-    controller: 'MainController',
-    action: 'todos'
-  },
   '/rest-examples': {
     view: 'main/rest'
-  }
+  },
+  '/todos': 'MainController.todos',
+
+  //
+  // Passport Auth Routes
+  //
+  'get /login':  'PassportAuthController.login',
+  'post /login': 'PassportAuthController.loginProcess',
+  '/logout':     'PassportAuthController.logout',
+  '/protected':  'PassportAuthController.protected'
+
+
+
 
   /*
   // But what if you want your home page to display

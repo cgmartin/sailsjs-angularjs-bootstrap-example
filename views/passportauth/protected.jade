@@ -1,0 +1,15 @@
+extends ../layout
+
+block body
+  .container
+    .row
+      .col-sm-10.col-sm-offset-1.col-md-8.col-md-offset-2
+        .panel.panel-primary
+          .panel-heading.clearfix
+            h1.panel-title Protected Page
+          .panel-body
+            p Only users who have authenticated may view this page.
+            p: a(href="/logout") Logout
+
+
+

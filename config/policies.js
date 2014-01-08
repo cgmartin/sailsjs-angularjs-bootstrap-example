@@ -21,6 +21,11 @@ module.exports.policies = {
   RestErrorController: {
     unauthorized: 'isAuthorized',
     forbidden:    false           // Acts oddly in socket mode?
+  },
+
+  PassportAuthController: {
+    '*': true,
+    protected: 'isPassportAuthenticated'
   }
 
   /*
