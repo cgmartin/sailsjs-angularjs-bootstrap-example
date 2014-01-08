@@ -1,52 +1,70 @@
-# sailsjs-angularjs-bootstrap-example
+# sailsjs-angularjs-bootstrap-example #
 
-> A suite of examples written for a Sails.js, AngularJS, Twitter Bootstrap application.
+> A suite of examples written for Sails.js, AngularJS, and Twitter Bootstrap.
 
 Contents:
 
-- REST API call test page using HTTP and Socket.io modes
-- "Todo List" app using Sails Socket.io REST
-- Twitter Bootstrap / Font Awesome custom compiles
-- Cache busting JS/CSS for production
-
-Upcoming/Todo/In-Progress:
-
-- Passport integration
-- Chat Room app
+- A REST API test page using Sails' transport agnostic routing (HTTP vs. Socket.io)
+- A "Todo List" app demo using Sails' Socket.io messaging and REST Blueprints
+- Twitter Bootstrap / Font Awesome custom LESS compiles (Grunt)
+- Cache busting JS/CSS for production (Grunt)
 
 If there other examples you would like to see, feel free to
 [create a GitHub issue](https://github.com/cgmartin/sailsjs-angularjs-bootstrap-example/issues/new).
 
-**Notes** *(as of Jan 7, 2014)*
+## Screenshots ##
 
-Be wary, this repo has been hacked together over a weekend as a Sails.js/AngularJS learning project.
-Do not consider it as production-ready code.
+![TodoAppScreenshot](https://github.com/cgmartin/sailsjs-angularjs-bootstrap-example/raw/master/img/TodoAppScreenshot.png)
 
-The REST API example page (see `assets/linker/js/controllers/restCtrl.js`)
-tries to exercise the error handling between HTTP and Socket modes.
-I am currently seeing some odd behavior in HTTP mode when throwing application errors,
-and in Socket mode when handling of forbidden errors. More research is needed.
+![APITestScreenshot](https://github.com/cgmartin/sailsjs-angularjs-bootstrap-example/raw/master/img/APITestScreenshot.png)
 
-The Todo app was written to explore how the socket.io connection, comet messages, and auto-subscriptions
-work in Sails (see `assets/linker/js/controllers/todoCtrl.js`).
-The Sails socket.io code was refactored into an Angular service (see `assets/linker/js/angular-sails.io.js`).
-The custom retry logic first sends a `$http.get()` request to the server for obtaining the security token cookie,
-otherwise you can encounter the `500 error: "handshake error"`
-(See bottom of [FAQ](http://sailsjs.org/#!documentation/sockets) page).
+## Notes ##
+*(as of Jan 7, 2014)*
 
-If you stop the server or cause a network disconnect when on the example pages, you should see
-some alert modals pop up.
-These are managed by SailsSocketCtrl (see `assets/linker/js/controllers/sailsSocketCtrl.js`)
-for reuse in other examples.
+Be wary, this repo has been quickly hacked together as a Sails.js/AngularJS
+learning project. Do not consider it as production-ready code.
 
-The Sails.js asset grunt tasks have been reconfigured to allow Twitter Bootstrap and Font Awesome custom compiles
-(see `/assets/linker/styles/*.less`).
-The grunt `copy` task has also been reconfigured to include other Bower-managed client-side libraries.
+**REST API example page** (see `assets/linker/js/controllers/restCtrl.js`)
 
-The [levid/angular-sails-socketio-mongo-demo](https://github.com/levid/angular-sails-socketio-mongo-demo) repo
-may also be of interest for Angular/Sails integration, though it uses Sails v0.8.
+This API test page was primarily made to exercise the error handling of REST
+calls between HTTP and Socket modes (404, 403, 500 errors). I am currently
+seeing some odd behavior when throwing 500 application errors, and when 403
+forbidden errors are triggered from policy configurations. The results are not
+consistent between modes. More research is needed.
 
-## Utilizes...
+**Todo List app demo** (see `assets/linker/js/controllers/todoCtrl.js`)
+
+This demo was written to explore how the socket.io connection, comet messages,
+and auto-subscriptions work in Sails. The
+[AngularJS TodoMVC](http://todomvc.com/architecture-examples/angularjs-perf/#/)
+examples were used a bit for reference. The Sails socket.io code, which is
+provided during creation of a new Sails project, was refactored into an Angular
+service (see `assets/linker/js/angular-sails.io.js`). It contains custom retry
+logic that first sends a `$http.get()` request to the server for obtaining the
+security token cookie, otherwise you may encounter the
+`500 error: "handshake error"` when restarting your local server
+(See bottom of: [FAQ](http://sailsjs.org/#!documentation/sockets)).
+
+If you stop the server or cause a network disconnect when on the example pages,
+you should see some alert modals pop up. These are managed by SailsSocketCtrl
+(see `assets/linker/js/controllers/sailsSocketCtrl.js`) for reuse across examples.
+
+**Grunt changes**
+
+The Sails.js asset grunt tasks have been reconfigured to allow Twitter Bootstrap
+and Font Awesome custom compiles (see `/assets/linker/styles/*.less`).
+The grunt `copy` task has also been reconfigured to include other Bower-managed
+client-side libraries.
+
+**You may also like...**
+
+[sailsCasts](http://irlnathan.github.io/sailscasts/) : A great series of
+screencasts showing you how to use Sails.js.
+
+The [levid/angular-sails-socketio-mongo-demo](https://github.com/levid/angular-sails-socketio-mongo-demo)
+repo may also be of interest for Sails v0.8 users.
+
+## Utilizes... ##
 
 - [Sails.js v0.9](http://sailsjs.org/)
 - [Twitter Bootstrap v3](http://getbootstrap.com/)
@@ -58,7 +76,7 @@ may also be of interest for Angular/Sails integration, though it uses Sails v0.8
 - [Node.js](http://nodejs.org/api/)
 - [Bower](http://bower.io/)
 
-## Installation
+## Installation ##
 
 Ensure that sails and bower are installed:
 ```sh
@@ -81,8 +99,8 @@ Lift the server:
 sails lift
 ```
 
-And visit ([http://localhost:1337/](http://localhost:1337)) for a list of examples.
+And then visit ([http://localhost:1337/](http://localhost:1337)) to run the examples.
 
-## License
+## License ##
 
 [MIT License](http://cgm.mit-license.org/)  Copyright © 2014 Christopher Martin
