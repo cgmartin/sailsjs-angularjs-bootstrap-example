@@ -155,6 +155,14 @@ module.exports = function (grunt) {
           { '.tmp/public/linker/js/angular-socket.io.js': './bower_components/angular-socket-io/socket.js' }
         ]
       },
+      prod : {
+          {
+            expand: true,
+            cwd: './bower_components/font-awesome/fonts/',
+            src: ['**/*'],
+            dest: '.tmp/public/fonts'
+          },
+      },
       build: {
         files: [
           {
@@ -221,6 +229,9 @@ module.exports = function (grunt) {
       dist: {
         src: ['.tmp/public/concat/production.js'],
         dest: '.tmp/public/min/production-<%= pkg.version %>.js'
+      },
+      options : {
+        mangle : false
       }
     },
 
@@ -433,6 +444,7 @@ module.exports = function (grunt) {
     'jst:dev',
     'less',
     'copy:dev',
+    'copy:prod',
     'concat',
     'uglify',
     'cssmin',
