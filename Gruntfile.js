@@ -156,12 +156,14 @@ module.exports = function (grunt) {
         ]
       },
       prod : {
-          {
-            expand: true,
-            cwd: './bower_components/font-awesome/fonts/',
-            src: ['**/*'],
-            dest: '.tmp/public/fonts'
-          },
+		  files : [
+          	{
+              expand: true,
+              cwd: './bower_components/font-awesome/fonts/',
+              src: ['**/*'],
+              dest: '.tmp/public/fonts'
+		  	}
+          ]
       },
       build: {
         files: [
