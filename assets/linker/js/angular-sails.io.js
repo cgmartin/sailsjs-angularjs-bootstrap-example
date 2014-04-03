@@ -59,7 +59,7 @@ angular.module('sails.io', [])
       }
 
       // Build to request
-      var json = io.JSON.stringify({
+      var json = angular.toJson({
         url: url,
         data: data
       });
@@ -71,7 +71,7 @@ angular.module('sails.io', [])
 
         if (result && typeof result === 'string') {
           try {
-            parsedResult = io.JSON.parse(result);
+            parsedResult = angular.fromJson(result);
           } catch (e) {
             $log.warn("Could not parse:", result, e);
             parsedResult = { error: { message: 'Bad response from server' }};
