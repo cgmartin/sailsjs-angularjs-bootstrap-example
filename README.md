@@ -87,6 +87,8 @@ screencasts showing you how to use Sails.js.
 The [levid/angular-sails-socketio-mongo-demo](https://github.com/levid/angular-sails-socketio-mongo-demo)
 repo may also be of interest for Sails v0.8 users.
 
+Maarten de Boer is working on a Sails v0.10 and AngularJS tutorial: [maartendb/angular-sails-scrum-tutorial](https://github.com/maartendb/angular-sails-scrum-tutorial)
+
 ## Utilizes... ##
 
 - [Sails.js v0.9](http://sailsjs.org/)
