@@ -22,6 +22,16 @@ If there other examples you would like to see, feel free to
 ![LoginPageScreenshot](https://github.com/cgmartin/sailsjs-angularjs-bootstrap-example/raw/master/screenshots/LoginPageScreenshot.png)
 
 ## Notes ##
+*(as of May 5, 2014)*
+
+Updated to latest Sails.js version `0.9.16` and added some fixes for
+[error handling](https://github.com/cgmartin/sailsjs-angularjs-bootstrap-example/issues/15).
+
+The `config/500.js` file has changed to include a 4th parameter to notify express'
+middleware that it is an error handler. Several jade files have also been edited to remove the `!!!` deprecated doctype.
+This fixes the html views for 404 and 500 error pages, as well as the oddity I had seen in January with 500 errors on
+the API test page. The 403 forbidden errors are still inconsistent between HTTP and Socket modes (???).
+
 *(as of Jan 7, 2014)*
 
 Be wary, this repo has been quickly hacked together as a Sails.js/AngularJS
