@@ -112,6 +112,12 @@ Maarten de Boer is working on a Sails v0.10 and AngularJS tutorial: [maartendb/a
 - [Node.js](http://nodejs.org/api/)
 - [Bower](http://bower.io/)
 
+
+## Requirements ##
+
+Node v0.10.21 . See [Node Version Manager](https://github.com/creationix/nvm)
+
+
 ## Installation ##
 
 Ensure that sails and bower are installed:
