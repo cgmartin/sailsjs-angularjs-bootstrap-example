@@ -3,6 +3,7 @@
   "private": true,
   "version": "0.0.2",
   "description": "A Sails.js / AngularJS / Twitter Bootstrap example application",
+  "engine": "node v0.10.21",
   "dependencies": {
     "sails": "0.9.16",
     "grunt": "0.4.2",
