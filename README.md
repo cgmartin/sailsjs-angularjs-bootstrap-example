@@ -115,7 +115,7 @@ Maarten de Boer is working on a Sails v0.10 and AngularJS tutorial: [maartendb/a
 
 ## Requirements ##
 
-Node v0.10.21 . See [Node Version Manager](https://github.com/creationix/nvm)
+Node v0.10.x  (brcypt is failing to compile in v0.12 at the moment)
 
 
 ## Installation ##
