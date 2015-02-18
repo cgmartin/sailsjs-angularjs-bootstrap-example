@@ -3,20 +3,20 @@
   "private": true,
   "version": "0.0.2",
   "description": "A Sails.js / AngularJS / Twitter Bootstrap example application",
-  "engines" : { 
-    "node" : ">=0.10.3 <0.12" 
-  }, 
+  "engines": {
+    "node": ">=0.10.3 <0.12"
+  },
   "dependencies": {
-    "sails": "0.9.16",
-    "grunt": "0.4.2",
-    "sails-disk": "~0.9.0",
-    "optimist": "0.3.4",
-    "then-jade": "1.1.0",
-    "jade": "1.0.2",
-    "passport": "0.1.18",
-    "bcrypt": "0.7.7",
     "async": "0.2.9",
-    "passport-local": "0.1.6"
+    "bcrypt": "^0.8.1",
+    "grunt": "0.4.2",
+    "jade": "1.0.2",
+    "optimist": "0.3.4",
+    "passport": "0.1.18",
+    "passport-local": "0.1.6",
+    "sails": "0.9.16",
+    "sails-disk": "~0.9.0",
+    "then-jade": "1.1.0"
   },
   "scripts": {
     "start": "node app.js",
