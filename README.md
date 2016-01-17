@@ -2,6 +2,8 @@
 
 > A suite of examples written for Sails.js, AngularJS, and Twitter Bootstrap.
 
+[![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
+
 Contents:
 
 - A REST API test page using Sails' transport agnostic routing (HTTP vs. Socket.io)
