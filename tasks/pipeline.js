@@ -31,8 +31,6 @@ var jsFilesToInject = [
   'linker/js/angular.js',
   'linker/js/ui-bootstrap.js',
   'linker/js/ui-bootstrap-tpls.js',
-  'linker/js/socket.io.js',
-  'linker/js/angular-socket.io.js',
   'linker/js/angular-sails.io.js',
   'linker/js/app.js',
 

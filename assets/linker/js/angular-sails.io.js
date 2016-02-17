@@ -59,26 +59,27 @@ angular.module('sails.io', [])
       }
 
       // Build to request
-      var json = angular.toJson({
+      var reqOptions = {
+        method: method,
         url: url,
         data: data
-      });
+      };
 
       // Send the message over the socket
-      socket.emit(method, json, function afterEmitted (result) {
+      socket.emit(reqOptions, function afterEmitted (resData, jwres) {
 
-        var parsedResult = result;
+        var parsedResult = resData;
 
-        if (result && typeof result === 'string') {
+        if (resData && typeof resData === 'string') {
           try {
-            parsedResult = angular.fromJson(result);
+            parsedResult = angular.fromJson(resData);
           } catch (e) {
-            $log.warn("Could not parse:", result, e);
+            $log.warn("Could not parse:", resData, e);
             parsedResult = { error: { message: 'Bad response from server' }};
           }
         }
 
-        cb && cb(parsedResult);
+        if (cb) cb(parsedResult);
       });
     }
 
@@ -127,8 +128,8 @@ angular.module('sails.io', [])
         delete: function(url, data, cb) {
           return this.request(url, data, cb, 'delete');
         },
-        emit: function (eventName, data, callback) {
-          return this.ioSocket.emit(eventName, data, asyncAngularify(this.ioSocket, callback));
+        emit: function (req, callback) {
+          return this.ioSocket.request(req, asyncAngularify(this.ioSocket, callback));
         },
 
         // when socket.on('someEvent', fn (data) { ... }),
@@ -163,7 +164,7 @@ angular.module('sails.io', [])
           if (this.ioSocket) this.disconnect();
           angular.extend(this.options, options);
 
-          this.ioSocket = io.connect(this.options.url, { reconnect: false });
+          this.ioSocket = io.sails.connect(this.options.url, { reconnect: false });
           this.forward(this.options.eventForwards);
           this.canReconnect = true;
           this.addRetryListeners();

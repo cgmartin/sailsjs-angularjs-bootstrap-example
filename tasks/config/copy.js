@@ -31,11 +31,9 @@ module.exports = function(grunt) {
           dest: '.tmp/public/linker/fonts'
         },
         { '.tmp/public/linker/js/jquery.js':            './bower_components/jquery/jquery.js' },
-        { '.tmp/public/linker/js/socket.io.js':         './bower_components/socket.io-client/dist/socket.io.js' },
         { '.tmp/public/linker/js/angular.js':           './bower_components/angular/angular.js' },
         { '.tmp/public/linker/js/ui-bootstrap.js':      './bower_components/angular-bootstrap/ui-bootstrap.js' },
         { '.tmp/public/linker/js/ui-bootstrap-tpls.js': './bower_components/angular-bootstrap/ui-bootstrap-tpls.js' },
-        { '.tmp/public/linker/js/angular-socket.io.js': './bower_components/angular-socket-io/socket.js' }
       ]
 		},
     prod : {
