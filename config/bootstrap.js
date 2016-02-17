@@ -106,7 +106,7 @@ module.exports.bootstrap = function (cb) {
             if (err) { return done(err); }
             if (!res) { return done(null, false, { message: 'Invalid password' }); }
             done(null, user);
-          })
+          });
         });
       }
     ));
