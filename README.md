@@ -4,6 +4,9 @@
 
 [![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
 
+> #Notice
+> The master branch is currently using an older Sails 0.10 version. For a **work-in-progress Sails 0.11 version**, please see @nickdiego's [`sails-0.11`](https://github.com/cgmartin/sailsjs-angularjs-bootstrap-example/tree/sails-0.11) branch (PR #27).
+
 Contents:
 
 - A REST API test page using Sails' transport agnostic routing (HTTP vs. Socket.io)
