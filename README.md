@@ -5,7 +5,7 @@
 [![No Maintenance Intended](http://unmaintained.tech/badge.svg)](http://unmaintained.tech/)
 
 > #Notice
-> The master branch is currently using an older Sails 0.10 version. For a **work-in-progress Sails 0.11 version**, please see @nickdiego's [`sails-0.11`](https://github.com/cgmartin/sailsjs-angularjs-bootstrap-example/tree/sails-0.11) branch (PR #27).
+> The master branch is currently using an older Sails 0.10 version. For a **work-in-progress Sails 0.11 version**, please see @nickdiego's [`sails-0.11`](https://github.com/cgmartin/sailsjs-angularjs-bootstrap-example/tree/sails-0.11) branch ([PR #27](https://github.com/cgmartin/sailsjs-angularjs-bootstrap-example/pull/27)).
 
 Contents:
 
