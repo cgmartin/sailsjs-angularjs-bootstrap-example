@@ -82,7 +82,7 @@ module.exports.bootstrap = function (cb) {
     });
 
     passport.deserializeUser(function(id, done) {
-      User.findOne(id).done(function (err, user) {
+      User.findOne(id).exec(function (err, user) {
         done(err, user);
       });
     });
@@ -90,23 +90,23 @@ module.exports.bootstrap = function (cb) {
 
     // Use the LocalStrategy within Passport.
     // Strategies in passport require a `verify` function, which accept
-    // credentials (in this case, a username and password), and invoke a callback
+    // credentials (in this case, a userid and password), and invoke a callback
     // with a user object. In the real world, this would query a database;
     // however, in this example we are using a baked-in set of users.
     passport.use(new LocalStrategy(
-      function(username, password, done) {
-        // Find the user by username. If there is no user with the given
-        // username, or the password is not correct, set the user to `false` to
+      function(userid, password, done) {
+        // Find the user by userid. If there is no user with the given
+        // userid, or the password is not correct, set the user to `false` to
         // indicate failure and set a flash message. Otherwise, return the
         // authenticated `user`.
-        User.findOneByUsername(username).done(function(err, user) {
+        User.findOne({ username: userid }).exec(function(err, user) {
           if (err) { return done(err); }
-          if (!user) { return done(null, false, { message: 'Unknown user ' + username }); }
+          if (!user) { return done(null, false, { message: 'Unknown user ' + userid }); }
           user.validPassword(password, function(err, res) {
             if (err) { return done(err); }
             if (!res) { return done(null, false, { message: 'Invalid password' }); }
             done(null, user);
-          })
+          });
         });
       }
     ));
