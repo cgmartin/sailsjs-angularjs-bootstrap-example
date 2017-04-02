@@ -55,7 +55,7 @@ module.exports = {
     }
     else {
       //IMPORTANT: The following is only needed when a BLANK password param gets submitted through a form. Otherwise, a next() call is enough.
-      User.findOne(values.id).done(function(err, user) {
+      User.findOne(values.id).exec(function(err, user) {
         if (err) {
           next(err);
         }
